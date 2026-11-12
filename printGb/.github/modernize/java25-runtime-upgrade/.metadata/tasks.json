@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Focused tasks for upgrading the gabryelle-print-agent Java runtime to Java 25.",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-java-runtime-to-25",
+      "description": "Upgrade the gabryelle-print-agent Java runtime to Java 25 LTS",
+      "reason": "The assessment reports Java 17 and identifies the Maven project configuration as not targeting the latest LTS.",
+      "requirements": "Addresses assessment issue \"Java Version is not the latest LTS\" (rule azure-java-version-02000, pom.xml:14). Set the project build/runtime target to Java 25 LTS and align README Java runtime and IntelliJ SDK instructions. Preserve existing desktop, tray, configuration, WebSocket, and printing behavior; retain the current executable shaded-JAR packaging. The IntelliJ project SDK is already set to 25 and should remain so. Validate with JDK 25 using mvn clean verify, confirm target/gabryelle-print-agent.jar retains its existing main-class/package behavior, and smoke-test launching it on Windows where a graphical session is available. Do not edit Front end/index.html, address unrelated assessment findings, migrate frameworks or dependencies unless required for Java 25 compatibility, or add infrastructure/deployment work.",
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "security",
+      "id": "002-security-java25-compatibility",
+      "description": "Check Java 25 upgrade compatibility for affected dependencies",
+      "reason": "The modernization-plan workflow requires a bounded security/CVE check alongside upgrade plans.",
+      "requirements": "Limit the check to dependencies changed or directly affected by the Java 25 runtime upgrade. Remediate only a finding that blocks the requested Java 25 upgrade or its validation; record and defer unrelated findings without changing unrelated dependencies or source.",
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    }
+  ],
+  "metadata": {
+    "planName": "java25-runtime-upgrade",
+    "projectName": "gabryelle-print-agent",
+    "language": "java",
+    "createdAt": "2026-11-06T11:15:44-03:00",
+    "version": "1.0"
+  }
+}
